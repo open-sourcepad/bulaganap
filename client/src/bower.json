@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.0.0",
   "authors": [
-    "rav bay <ravzski@gmail.com>"
+    "karl potenciano <karl.potenciano@live.com>"
   ],
   "license": "MIT",
   "ignore": [
@@ -19,7 +19,11 @@
     "angular-resource": "~1.5.5",
     "angular-sanitize": "~1.5.5",
     "angular-ui-router-anim-in-out": "^1.0.2",
-    "angular-ui-router": "ui-router#^0.2.18"
+    "angular-growl-v2": "^0.7.9",
+    "moment": "^2.13.0",
+    "angular-ui-router": "ui-router#^0.2.18",
+    "moment-timezone": "^0.5.4",
+    "firebase": "^3.0.3"
   },
   "resolutions": {
     "angular": "=1.4.5"

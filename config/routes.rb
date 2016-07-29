@@ -5,5 +5,8 @@ Rails.application.routes.draw do
       post 'find_match'
     end
   end
-  
+
+  get "*path" => "application#index"
+  root to: "application#index"
+
 end
