@@ -26,7 +26,7 @@ class Move < ApplicationRecord
       player.game.send("starting_point_#{player.role}")
     else
       # get last point from latest move
-      last_move = Move.where(game_id: player.game_id).last
+      last_move = Move.where(game_id: player.game_id, player_id: player.id).last
       fp = last_move.to_point
       if self.check_if_invalid(maze_config, fp)
         last_move.from_point
@@ -85,7 +85,6 @@ class Move < ApplicationRecord
     else
       # check if goal achieved
       if maze_config["goal"] == move.to_point
-        game = player.game
         game.update_attributes(status: "finished", winner: move.player_id)
         # send out goal achieved sound
         Pusher.trigger("player_#{game.player_one_id}_channel", 'game_finished', {win: game.player_one_id == move.player_id})
