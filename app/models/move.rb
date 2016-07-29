@@ -6,11 +6,13 @@ class Move < ApplicationRecord
   def self.set move_params
     player = Player.find(move_params[:player_id])
     maze_config = YAML.load_file(player.game.maze.file_name)
-    from_point = self.set_from_point(move_params, player, maze_config)
-    points = self.get_points(move_params[:direction], from_point)
-    move = Move.create(game_id: player.game.id, player_id: player.id, from_point: points[:fp], to_point: points[:tp])
-    # check whether finished or invalid, then push event to pusher
-    self.push_event(move, player, maze_config)
+    if self.check_if_game_started
+      from_point = self.set_from_point(move_params, player, maze_config)
+      points = self.get_points(move_params[:direction], from_point)
+      move = Move.create(game_id: player.game.id, player_id: player.id, from_point: points[:fp], to_point: points[:tp])
+      # check whether finished or invalid, then push event to pusher
+      self.push_event(move, player, maze_config)
+    end
   end
 
   def self.set_from_point move_params, player, maze_config
@@ -35,6 +37,17 @@ class Move < ApplicationRecord
     maze_config["walls"].values.include?(fp) || maze_config["min_x"] > fp.first || maze_config["min_y"] > fp.last || maze_config["max_x"] < fp.first || maze_config["max_y"] < fp.last
   end
 
+  def self.check_if_game_started player
+    player.game.status == "started"
+  end
+
+  #   1 2 3 4 5 6
+  # 1|-------------------------------
+  # 2|
+  # 3|
+  # 4|
+  # 5|
+  # 6|-------------------------------
   def self.get_points direction, from_point
     case direction
     when "right"
