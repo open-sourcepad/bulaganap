@@ -89,7 +89,7 @@ class Move < ApplicationRecord
         # send out goal achieved sound
         Pusher.trigger("player_#{game.player_one_id}_channel", 'game_finished', {win: game.player_one_id == move.player_id})
         Pusher.trigger("player_#{game.player_two_id}_channel", 'game_finished', {win: game.player_two_id == move.player_id})
-      elsex
+      else
         # send out valid sound
         Pusher.trigger("player_#{player.id}_channel", 'move_success', {message: 'move success'})
       end
