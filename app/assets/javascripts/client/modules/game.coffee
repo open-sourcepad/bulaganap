@@ -66,12 +66,30 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
       audioElement.pause()
       audioElement.currentTime = 0
 
-  for audioType in ['waiting', 'started', 'near', 'winner', 'loser']
-    audioElement = document.getElementById(audioType)
-    audioElement.pause()
-    audioElement.addEventListener 'ended', ->
-      audioElement.currentTime = 0
-      audioElement.play()
+  # for audioType in ['waiting', 'started', 'near', 'winner', 'loser']
+  #   audioElement = document.getElementById(audioType)
+  #   audioElement.pause()
+  #   audioElement.addEventListener 'ended', ->
+  #     audioElement.currentTime = 0
+  #     audioElement.play()
+  audio.waiting.onended = ->
+    audio.waiting.currentTime = 0
+    audio.waiting.play()
+  audio.started.onended = ->
+    audio.started.currentTime = 0
+    audio.started.play()
+  audio.winner.onended = ->
+    audio.winner.currentTime = 0
+    audio.winner.play()
+  audio.started.onended = ->
+    audio.started.currentTime = 0
+    audio.started.play()
+  audio.loser.onended = ->
+    audio.loser.currentTime = 0
+    audio.loser.play()
+  audio.near.onended = ->
+    audio.near.currentTime = 0
+    audio.near.play()
 
   Pusher.logToConsole = true;
 
