@@ -13,4 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
+//= require bower_components/angular/angular
+//= require bower_components/angular-ui-router/release/angular-ui-router
+//= require bower_components/angular-resource/angular-resource
+//= require_tree ./client
