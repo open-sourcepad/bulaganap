@@ -14,13 +14,6 @@ Ctrl = ($scope, $state, $stateParams) ->
     audio.background.currentTime = 0
     audio.background.play()
   audio.background.play()
-  # Pusher.logToConsole = true;
-
-  # pusher = new Pusher('a52ef4ce92582b682a9b', {
-  #     cluster: 'ap1',
-  #     encrypted: true
-  #   });
-  # channel = pusher.subscribe($stateParams.channel)
 
   getDirection = (coords1, coords2) ->
     yDiff = coords1.y - coords2.y
@@ -48,16 +41,24 @@ Ctrl = ($scope, $state, $stateParams) ->
     audioElement = document.getElementById(audio)
     audioElement.pause()
     audioElement.currentTime = 0
+  Pusher.logToConsole = true;
 
-  # channel.bind 'move-success',
-  #   ()->
-  #     audio.footsteps.play()
-  # channel.bind 'move-hit',
-  #   ()->
-  #     audio.wallHit.play()
-  # channel.bind 'move-winner',
-  #   ()->
-  #     audio.winner.play()
+  pusher = new Pusher('30187ba71ee217eb669c', {
+      encrypted: true
+    });
+  channel = pusher.subscribe('test_channel')
+
+  channel.bind 'move_success',
+    (data)->
+      console.log('dfjslsfd')
+      # alert(data.message)
+      audio.footsteps.play()
+  channel.bind 'move_failed',
+    ()->
+      audio.wallHit.play()
+  channel.bind 'game_winner',
+    ()->
+      audio.winner.play()
 
   return
 Ctrl.$inject = ['$scope', '$state', '$stateParams']
