@@ -7,4 +7,19 @@
   position: fixed;
   background: black;
   color: white;
+  text-align: center;
+}
+
+.startBtn {
+  padding: 20px 40px;
+  border-radius: 5px;
+  background: white;
+  border-top: 2px solid #e2e2e2;
+  border-right: 2px solid #e2e2e2;
+  border-bottom: 2px solid #d2d2d2;
+  border-left: 2px solid #d2d2d2;
+  color: black;
+  width: 160px;
+  position: relative;
+  top: 50%;
 }
