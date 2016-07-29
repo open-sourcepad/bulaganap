@@ -69,6 +69,7 @@ class Move < ApplicationRecord
     goal = maze_config["goal"]
     # compute distance of last point to goal using pythagorean theorem
     distance = Math.sqrt(((move.to_point.first - goal.first).abs)**2 + ((move.to_point.last - goal.last).abs)**2)
+
     if distance <= maze_config["blocks_near_goal"]
       # near goal, push trigger for sound
       Pusher.trigger("player_#{move.player.id}_channel", 'near_goal', {near: true})
@@ -85,6 +86,7 @@ class Move < ApplicationRecord
     else
       # check if goal achieved
       if maze_config["goal"] == move.to_point
+        game = player.game
         game.update_attributes(status: "finished", winner: move.player_id)
         # send out goal achieved sound
         Pusher.trigger("player_#{game.player_one_id}_channel", 'game_finished', {win: game.player_one_id == move.player_id})

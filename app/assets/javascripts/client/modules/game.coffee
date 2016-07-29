@@ -68,6 +68,7 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
 
   for audioType in ['waiting', 'started', 'near', 'winner', 'loser']
     audioElement = document.getElementById(audioType)
+    audioElement.pause()
     audioElement.addEventListener 'ended', ->
       audioElement.currentTime = 0
       audioElement.play()
@@ -88,7 +89,7 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
       audio.wallHit.play()
   channel.bind 'near_goal',
     (data)->
-      if data.near && isAudioPlaying(audio.near)
+      if data.near && !isAudioPlaying(audio.near)
         audio.near.play()
       else if !data.near
         audio.near.pause()
@@ -98,11 +99,15 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
       playBackgroundAudio()
   channel.bind 'game_finished',
     (data)->
+      audio.near.pause()
       if data.win
         audio.winner.play()
       else
         audio.loser.play()
-      setTimeout($state.go('home'), 3000)
+      setTimeout(->
+        $state.go('home')
+      , 10000)
+      return
 
 
 
