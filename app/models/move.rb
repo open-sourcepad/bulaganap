@@ -60,6 +60,7 @@ class Move < ApplicationRecord
 
         # Broadcast both player's channel that the game is finished
         game = player.game
+        game.update_attributes(status: "finished")
         Pusher.trigger("player_#{game.player_one_id}_channel", 'game_finished', {message: 'game finished'})
         Pusher.trigger("player_#{game.player_two_id}_channel", 'game_finished', {message: 'game finished'})
       else
