@@ -9,6 +9,9 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
     footsteps: document.getElementById('footsteps')
     wallHit: document.getElementById('wallHit')
     winner: document.getElementById('winner')
+    loser: document.getElementById('loser')
+    near: document.getElementById('near')
+
   $scope.playerId = $stateParams.id
   $scope.channel = $stateParams.channel
   $scope.gameId = $stateParams.game_id
@@ -53,13 +56,22 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
       $scope.moveDisabled = true
       Game.move({move: param}).$promise
         .then ->
-          console.log('jdfslf')
+          null
         .finally ->
           $scope.moveDisabled = false
-  $scope.onAudioEnd = (audio) ->
-    audioElement = document.getElementById(audio)
-    audioElement.pause()
-    audioElement.currentTime = 0
+
+  for audioType in ['wallHit', 'footsteps']
+    audioElement = document.getElementById(audioType)
+    audioElement.addEventListener 'ended', ->
+      audioElement.pause()
+      audioElement.currentTime = 0
+
+  for audioType in ['waiting', 'started', 'near']
+    audioElement = document.getElementById(audioType)
+    audioElement.addEventListener 'ended', ->
+      audioElement.currentTime = 0
+      audioElement.play()
+
   Pusher.logToConsole = true;
 
   pusher = new Pusher('30187ba71ee217eb669c', {
@@ -70,19 +82,30 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
   channel.bind 'move_success',
     (data)->
       audio.footsteps.play()
+      console.log(audio.footsteps)
   channel.bind 'move_failed',
     (data)->
       audio.wallHit.play()
-  channel.bind 'game_winner',
+  channel.bind 'near_goal',
     (data)->
-      audio.winner.play()
+      if data.near && isAudioPlaying(audio)
+        audio.near.play()
+      else
+        audio.near.pause()
   channel.bind 'game_started',
     (data)->
       $scope.gameStatus = "started"
       playBackgroundAudio()
   channel.bind 'game_finished',
     (data)->
+      if data.win
+        audio.winner.play()
+      else
+        audio.loser.play()
 
+
+  isAudioPlaying =(currentAudio)->
+    return currentAudio.currentTime > 0 && !currentAudio.paused
   getGameStatus =->
     Game.get({id: $scope.gameId}).$promise
       .then (data) ->
@@ -91,7 +114,6 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
 
 
   playBackgroundAudio =->
-    console.log($scope.gameStatus)
     if $scope.gameStatus == 'in_queue'
       audio.started.pause()
       audio.waiting.play()
