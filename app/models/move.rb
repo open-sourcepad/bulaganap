@@ -85,6 +85,7 @@ class Move < ApplicationRecord
     else
       # check if goal achieved
       if maze_config["goal"] == move.to_point
+        game = player.game
         game.update_attributes(status: "finished", winner: move.player_id)
         # send out goal achieved sound
         Pusher.trigger("player_#{game.player_one_id}_channel", 'game_finished', {win: game.player_one_id == move.player_id})

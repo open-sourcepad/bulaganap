@@ -66,7 +66,7 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
       audioElement.pause()
       audioElement.currentTime = 0
 
-  for audioType in ['waiting', 'started', 'near']
+  for audioType in ['waiting', 'started', 'near', 'winner', 'loser']
     audioElement = document.getElementById(audioType)
     audioElement.addEventListener 'ended', ->
       audioElement.currentTime = 0
@@ -102,6 +102,8 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
         audio.winner.play()
       else
         audio.loser.play()
+      setTimeout(function(){$state.go('home')}, 3000)
+
 
 
   isAudioPlaying =(currentAudio)->
