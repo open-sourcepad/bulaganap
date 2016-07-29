@@ -1,7 +1,13 @@
 module = ($resource)->
 
-  Game = $resource "/api/game/",
+  Game = $resource "/game", {user_id: "@user_id", id: "@id"},
     {
+      find_match:
+        method: 'POST'
+        url: "/games/find_match"
+      move:
+        method: 'POST'
+        url: "/moves"
     }
 
   Game

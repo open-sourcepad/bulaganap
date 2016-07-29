@@ -1,6 +1,11 @@
-Ctrl = ($scope, $state) ->
-  $scope.startGame = ->
-    $state.go('game')
+Ctrl = ($scope, $state, Game) ->
+  pusher = new Pusher '30187ba71ee217eb669c',
+    encrypted: true
 
-Ctrl.$inject = ['$scope', '$state']
+  $scope.startGame = ->
+    Game.find_match().$promise.
+      then (data) ->
+        $state.go('game', {channel: "player_#{data.player_id}_channel"})
+
+Ctrl.$inject = ['$scope', '$state', 'Game']
 client.controller('HomeCtrl', Ctrl)
