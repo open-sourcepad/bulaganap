@@ -54,7 +54,6 @@ GEM
     erubis (2.7.0)
     execjs (2.7.0)
     ffi (1.9.14)
-    geometry (6.5)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     i18n (0.7.0)
@@ -166,7 +165,6 @@ PLATFORMS
 DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
-  geometry
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)
