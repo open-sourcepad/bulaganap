@@ -25,6 +25,7 @@ class Game < ApplicationRecord
     # set starting points
     update_attributes(starting_point_player1: maze_config["starting_points_for_player1"].values.sample, starting_point_player2: maze_config["starting_points_for_player2"].values.sample)
     # set countdown via pusher
+    Pusher.trigger("player_#{player.id}_channel", 'game_started', {message: 'game started'})
   end
 
 end
