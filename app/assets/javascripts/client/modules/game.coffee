@@ -88,7 +88,7 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
       audio.wallHit.play()
   channel.bind 'near_goal',
     (data)->
-      if data.near && isAudioPlaying(audio)
+      if data.near && isAudioPlaying(audio.near)
         audio.near.play()
       else
         audio.near.pause()
