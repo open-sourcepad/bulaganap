@@ -4,19 +4,25 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
 
   $scope.direction = null
   audio =
-    background: document.getElementById('backgroundAudio')
+    waiting: document.getElementById('waiting')
+    started: document.getElementById('started')
     footsteps: document.getElementById('footsteps')
     wallHit: document.getElementById('wallHit')
     winner: document.getElementById('winner')
   $scope.playerId = $stateParams.id
   $scope.channel = $stateParams.channel
-  $scope.disabled= false
+  $scope.gameId = $stateParams.game_id
+  $scope.gameStatus = ""
+  $scope.moveDisabled = false
+  audio.waiting.onended = ()->
+    audio.waiting.pause()
+    audio.waiting.currentTime = 0
+    audio.waiting.play()
 
-  audio.background.onended = ()->
-    audio.background.pause()
-    audio.background.currentTime = 0
-    audio.background.play()
-  audio.background.play()
+  audio.started.onended = ()->
+    audio.started.pause()
+    audio.started.currentTime = 0
+    audio.started.play()
 
   getDirection = (coords1, coords2) ->
     yDiff = coords1.y - coords2.y
@@ -40,20 +46,16 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
   $scope.untrack = ($event) ->
     $scope._current = {x: $event.pageX, y: $event.pageY}
     $scope.direction = getDirection($scope._prev, $scope._current)
-    if !$scope.disabled
-      $scope.move({player_id: $scope.playerId, direction: $scope.direction})
+    $scope.move({player_id: $scope.playerId, direction: $scope.direction})
 
-  # $scope.move = ->
-  #   Game.move({move: {player_id: $scope.playerId, direction: $scope.direction}}).$promise.
-  #     then(data)->
-  #       console.log('jlsjls')
   $scope.move = (param)->
-    $scope.disabled = true
-    Game.move({move: param}).$promise
-      .then() ->
-        $scope.disabled = false
-        console.log('jdfslf')
-
+    if !$scope.moveDisabled
+      $scope.moveDisabled = true
+      Game.move({move: param}).$promise
+        .then ->
+          console.log('jdfslf')
+        .finally ->
+          $scope.moveDisabled = false
   $scope.onAudioEnd = (audio) ->
     audioElement = document.getElementById(audio)
     audioElement.pause()
@@ -76,10 +78,27 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
       audio.winner.play()
   channel.bind 'game_started',
     (data)->
-
+      $scope.gameStatus = "started"
+      playBackgroundAudio()
   channel.bind 'game_finished',
     (data)->
 
+  getGameStatus =->
+    Game.get({id: $scope.gameId}).$promise
+      .then (data) ->
+        $scope.gameStatus = data.status
+        playBackgroundAudio()
+
+
+  playBackgroundAudio =->
+    console.log($scope.gameStatus)
+    if $scope.gameStatus == 'in_queue'
+      audio.started.pause()
+      audio.waiting.play()
+    else if $scope.gameStatus == 'started'
+      audio.waiting.pause()
+      audio.started.play()
+  getGameStatus()
   return
 Ctrl.$inject = ['$scope', '$state', '$stateParams', 'Game']
 client.controller('GameCtrl', Ctrl)

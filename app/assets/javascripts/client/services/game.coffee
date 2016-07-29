@@ -1,6 +1,6 @@
 module = ($resource)->
 
-  Game = $resource "/game", {user_id: "@user_id", id: "@id"},
+  Game = $resource "/games/:id", {user_id: "@user_id", id: "@id"},
     {
       find_match:
         method: 'POST'
@@ -8,6 +8,7 @@ module = ($resource)->
       move:
         method: 'POST'
         url: "/moves"
+
     }
 
   Game
