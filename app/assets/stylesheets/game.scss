@@ -8,6 +8,7 @@
   background: black;
   color: white;
   text-align: center;
+  float: left
 }
 
 .startBtn {
@@ -21,5 +22,26 @@
   color: black;
   width: 160px;
   position: relative;
-  top: 50%;
+  // top: 50%;
+
+  font-family: 'Roboto';
+}
+.img{
+  width: 100%;
+  // height: 25%;
+}
+
+.gameboard {
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  position: fixed;
+  // background: black;
+  color: white;
+  text-align: center;
+  float: left;
+  background-image: url('../blackground3.gif');
+  background-size: 100% 100%
 }
