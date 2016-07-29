@@ -90,7 +90,7 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
     (data)->
       if data.near && isAudioPlaying(audio.near)
         audio.near.play()
-      else
+      else if !data.near
         audio.near.pause()
   channel.bind 'game_started',
     (data)->
