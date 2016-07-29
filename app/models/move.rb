@@ -20,7 +20,7 @@ class Move < ApplicationRecord
   end
 
   def self.set_from_point move_params, player, maze_config
-    move_count = Move.where(game_id: player.game_id).count
+    move_count = Move.where(game_id: player.game_id, player_id: player.id).count
     if move_count == 0
       # player is moving from starting point
       player.game.send("starting_point_#{player.role}")
