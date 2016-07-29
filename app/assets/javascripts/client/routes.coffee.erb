@@ -10,4 +10,9 @@ client.config [
         url: '/',
         templateUrl: "<%=asset_path('home.html')%>"
         controller: 'HomeCtrl'
+      .state 'game',
+        url: '/game'
+        templateUrl: "<%=asset_path('game.html')%>"
+        controllet: 'GameCtrl'
+
 ]
