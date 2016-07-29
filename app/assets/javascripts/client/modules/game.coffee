@@ -49,7 +49,7 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
     $scope.move({player_id: $scope.playerId, direction: $scope.direction})
 
   $scope.move = (param)->
-    if !$scope.moveDisabled
+    if !$scope.moveDisabled && $scope.gameStatus == 'started'
       $scope.moveDisabled = true
       Game.move({move: param}).$promise
         .then ->
