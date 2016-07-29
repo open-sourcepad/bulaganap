@@ -22,7 +22,7 @@ class Move < ApplicationRecord
       # get last point from latest move
       last_move = Move.where(game_id: player.game_id).last
       fp = last_move.to_point
-      if self.check_if_invalid(fp)
+      if self.check_if_invalid(maze_config, fp)
         last_move.from_point
       else
         fp
@@ -49,7 +49,7 @@ class Move < ApplicationRecord
   end
 
   def self.push_event move, player, maze_config
-    if self.check_if_invalid(fp)
+    if self.check_if_invalid(maze_config, fp)
       # send out invalid sound
       Pusher.trigger("player_#{player.id}_channel", 'move_failed', {message: 'move failed'})
     else
