@@ -10,6 +10,10 @@ class Move < ApplicationRecord
       from_point = self.set_from_point(move_params, player, maze_config)
       points = self.get_points(move_params[:direction], from_point)
       move = Move.create(game_id: player.game.id, player_id: player.id, from_point: points[:fp], to_point: points[:tp])
+
+      # check if goal is nearby
+      self.check_if_goal_nearby(move, maze_config)
+
       # check whether finished or invalid, then push event to pusher
       self.push_event(move, player, maze_config)
     end
@@ -58,6 +62,19 @@ class Move < ApplicationRecord
       {fp: from_point, tp: [from_point.first, from_point.last - 1]}
     when "down"
       {fp: from_point, tp: [from_point.first, from_point.last + 1]}
+    end
+  end
+
+  def self.check_if_goal_nearby move, maze_config
+    goal = maze_config[:goal]
+    # compute distance of last point to goal using pythagorean theorem
+    distance = Math.sqrt(((move.to_point.first - goal.first).abs)**2 + ((move.to_point.last - goal.last).abs)**2)
+    if distance <= maze_config[:blocks_near_goal]
+      # near goal, push trigger for sound
+      Pusher.trigger("player_#{move.player.id}_channel", 'near_goal', {near: true})
+    else
+      # far from goal, push trigger to make sound off when on
+      Pusher.trigger("player_#{move.player.id}_channel", 'near_goal', {near: false})
     end
   end
 

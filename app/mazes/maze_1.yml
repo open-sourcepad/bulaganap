@@ -11,6 +11,7 @@ max_x: 15
 min_y: 1
 max_y: 15
 goal: [9,8]
+blocks_near_goal: 3
 walls:
   p1: [6,1]
   p2: [10,1]
