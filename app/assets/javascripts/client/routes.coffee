@@ -1,4 +1,4 @@
-angular.module('client').config [
+client.config [
   '$stateProvider','$locationProvider','$urlRouterProvider'
   ($stateProvider,$locationProvider,$urlRouterProvider) ->
 
@@ -8,6 +8,6 @@ angular.module('client').config [
     $stateProvider
       .state 'home',
         url: '/',
-        templateUrl: './home.html'
+        templateUrl: 'home.html'
         controller: 'HomeCtrl'
 ]
