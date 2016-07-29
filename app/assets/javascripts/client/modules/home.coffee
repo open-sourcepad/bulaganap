@@ -5,7 +5,7 @@ Ctrl = ($scope, $state, Game) ->
   $scope.startGame = ->
     Game.find_match().$promise.
       then (data) ->
-        $state.go('game', {channel: "player_#{data.player_id}_channel"})
+        $state.go('game', {channel: "player_#{data.player_id}_channel", id: data.player_id})
 
 Ctrl.$inject = ['$scope', '$state', 'Game']
 client.controller('HomeCtrl', Ctrl)
