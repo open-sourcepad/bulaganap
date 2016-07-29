@@ -10,6 +10,7 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
     winner: document.getElementById('winner')
   $scope.playerId = $stateParams.id
   $scope.channel = $stateParams.channel
+  $scope.disabled= false
 
   audio.background.onended = ()->
     audio.background.pause()
@@ -39,16 +40,20 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
   $scope.untrack = ($event) ->
     $scope._current = {x: $event.pageX, y: $event.pageY}
     $scope.direction = getDirection($scope._prev, $scope._current)
-    $scope.move({player_id: $scope.playerId, direction: $scope.direction})
+    if !$scope.disabled
+      $scope.move({player_id: $scope.playerId, direction: $scope.direction})
 
   # $scope.move = ->
   #   Game.move({move: {player_id: $scope.playerId, direction: $scope.direction}}).$promise.
   #     then(data)->
   #       console.log('jlsjls')
   $scope.move = (param)->
+    $scope.disabled = true
     Game.move({move: param}).$promise
       .then() ->
+        $scope.disabled = false
         console.log('jdfslf')
+
   $scope.onAudioEnd = (audio) ->
     audioElement = document.getElementById(audio)
     audioElement.pause()
