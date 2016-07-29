@@ -8,9 +8,9 @@ Rails.application.routes.draw do
     end
 
     resources :moves, only: [:create]
-
-    get "*path" => "application#index"
-    root to: "application#index"
   end
+
+  get "*path" => "application#index"
+  root to: "application#index"
 
 end
