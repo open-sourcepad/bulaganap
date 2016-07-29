@@ -66,7 +66,7 @@ class Move < ApplicationRecord
   end
 
   def self.check_if_goal_nearby move, maze_config
-    goal = maze_config[:goal]
+    goal = maze_config["goal"]
     # compute distance of last point to goal using pythagorean theorem
     distance = Math.sqrt(((move.to_point.first - goal.first).abs)**2 + ((move.to_point.last - goal.last).abs)**2)
     if distance <= maze_config[:blocks_near_goal]
