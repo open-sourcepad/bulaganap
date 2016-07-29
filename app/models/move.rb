@@ -8,7 +8,7 @@ class Move < ApplicationRecord
     maze_config = YAML.load_file(player.game.maze.file_name)
     from_point = self.set_from_point(move_params, player, maze_config)
     points = self.get_points(move_params[:direction], from_point)
-    Move.create(game_id: player.game.id, player_id: player.id, from_point: points[:fp], to_point: points[:tp])
+    move = Move.create(game_id: player.game.id, player_id: player.id, from_point: points[:fp], to_point: points[:tp])
     # check whether finished or invalid, then push event to pusher
     self.push_event(move, player, maze_config)
   end
