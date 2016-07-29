@@ -49,7 +49,7 @@ class Move < ApplicationRecord
   end
 
   def self.push_event move, player, maze_config
-    if self.check_if_invalid(maze_config, fp)
+    if self.check_if_invalid(maze_config, move.to_point)
       # send out invalid sound
       Pusher.trigger("player_#{player.id}_channel", 'move_failed', {message: 'move failed'})
     else
