@@ -6,7 +6,7 @@ class Move < ApplicationRecord
   def self.set move_params
     player = Player.find(move_params[:player_id])
     maze_config = YAML.load_file(player.game.maze.file_name)
-    if self.check_if_game_started
+    if self.check_if_game_started(player)
       from_point = self.set_from_point(move_params, player, maze_config)
       points = self.get_points(move_params[:direction], from_point)
       move = Move.create(game_id: player.game.id, player_id: player.id, from_point: points[:fp], to_point: points[:tp])
