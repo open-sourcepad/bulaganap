@@ -1,12 +1,16 @@
 Rails.application.routes.draw do
 
-  resources :games do
-    collection do
-      post 'find_match'
+  constraints format: "json" do
+    resources :games do
+      collection do
+        post 'find_match'
+      end
     end
-  end
 
-  get "*path" => "application#index"
-  root to: "application#index"
+    resources :moves, only: [:create]
+
+    get "*path" => "application#index"
+    root to: "application#index"
+  end
 
 end

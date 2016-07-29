@@ -1,19 +1,8 @@
 class GamesController < ApplicationController
 
-  before_action :find_game, only: [:show]
-
   def find_match
-    Game.find_match
+    @game = Game.find_match
+    render json: @game
   end
-
-  def show
-
-  end
-
-  private
-
-  def find_game
-    @game = Game.find(params[:id])
-  end
-
+  
 end

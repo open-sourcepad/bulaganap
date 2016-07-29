@@ -10,17 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160729095409) do
+ActiveRecord::Schema.define(version: 20160729123407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "games", force: :cascade do |t|
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.string   "status",        default: "in_queue"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.string   "status",                 default: "in_queue"
     t.integer  "player_one_id"
     t.integer  "player_two_id"
+    t.integer  "maze_id"
+    t.integer  "starting_point_player1",                                   array: true
+    t.integer  "starting_point_player2",                                   array: true
+  end
+
+  create_table "mazes", force: :cascade do |t|
+    t.string   "file_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "moves", force: :cascade do |t|
@@ -36,6 +45,7 @@ ActiveRecord::Schema.define(version: 20160729095409) do
     t.integer  "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "role"
   end
 
 end
