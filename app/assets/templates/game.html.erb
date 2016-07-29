@@ -1,2 +1,5 @@
 <div class="game" ng-mousedown="track($event)" ng-mouseup="untrack($event)">
 </div>
+<audio id="backgroundAudio" src="background.ogg"></audio>
+<audio id="footsteps" src="footsteps.m4a" onended="onAudioEvent('footsteps')"></audio>
+<audio id="wallHit" src="wallhit.m4a" onended="onAudioEvent('wallHit')"></audio>

@@ -1,4 +1,4 @@
-Ctrl = ($scope, $state) ->
+Ctrl = ($scope, $state, $stateParams) ->
   $scope._prev = null
   $scope._current= null
 
@@ -8,6 +8,20 @@ Ctrl = ($scope, $state) ->
     footsteps: document.getElementById('footsteps')
     wallHit: document.getElementById('wallHit')
     winner: document.getElementById('winner')
+
+  audio.background.onended = ()->
+    audio.background.pause()
+    audio.background.currentTime = 0
+    audio.background.play()
+  audio.background.play()
+  # Pusher.logToConsole = true;
+
+  # pusher = new Pusher('a52ef4ce92582b682a9b', {
+  #     cluster: 'ap1',
+  #     encrypted: true
+  #   });
+  # channel = pusher.subscribe($stateParams.channel)
+
   getDirection = (coords1, coords2) ->
     yDiff = coords1.y - coords2.y
     xDiff = coords1.x - coords2.x
@@ -35,8 +49,16 @@ Ctrl = ($scope, $state) ->
     audioElement.pause()
     audioElement.currentTime = 0
 
-  return
+  # channel.bind 'move-success',
+  #   ()->
+  #     audio.footsteps.play()
+  # channel.bind 'move-hit',
+  #   ()->
+  #     audio.wallHit.play()
+  # channel.bind 'move-winner',
+  #   ()->
+  #     audio.winner.play()
 
-  audio.background.play()
-Ctrl.$inject = ['$scope', '$state']
+  return
+Ctrl.$inject = ['$scope', '$state', '$stateParams']
 client.controller('GameCtrl', Ctrl)
