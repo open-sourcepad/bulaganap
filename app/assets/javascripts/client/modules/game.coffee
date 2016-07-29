@@ -1,5 +1,4 @@
 Ctrl = ($scope, $state) ->
-
   $scope._prev = null
   $scope._current= null
 
@@ -22,11 +21,13 @@ Ctrl = ($scope, $state) ->
         return 'down'
 
   $scope.track = ($event) ->
-    $scope._prev = {x: $event.x, y: $event.y}
+    $scope._prev = {x: $event.pageX, y: $event.pageY}
 
   $scope.untrack = ($event) ->
-    $scope._current = {x: $event.x, y: $event.y}
+    $scope._current = {x: $event.pageX, y: $event.pageY}
     $scope.direction = getDirection($scope._prev, $scope._current)
+
+  return
 
 Ctrl.$inject = ['$scope', '$state']
 client.controller('GameCtrl', Ctrl)

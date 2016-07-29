@@ -3,16 +3,16 @@ client.config [
   ($stateProvider,$locationProvider,$urlRouterProvider) ->
 
     # $locationProvider.html5Mode(true)
-    $urlRouterProvider.otherwise('/')
+    $urlRouterProvider.otherwise('/home')
 
     $stateProvider
       .state 'home',
-        url: '/',
+        url: '/home',
         templateUrl: "<%=asset_path('home.html')%>"
         controller: 'HomeCtrl'
       .state 'game',
         url: '/game'
         templateUrl: "<%=asset_path('game.html')%>"
-        controllet: 'GameCtrl'
+        controller: 'GameCtrl'
 
 ]
