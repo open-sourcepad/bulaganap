@@ -102,7 +102,8 @@ Ctrl = ($scope, $state, $stateParams, Game) ->
         audio.winner.play()
       else
         audio.loser.play()
-      setTimeout(function(){$state.go('home')}, 3000)
+      setTimeout($state.go('home'), 3000)
+
 
 
 
