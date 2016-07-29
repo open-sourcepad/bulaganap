@@ -1,4 +1,4 @@
-Ctrl = ($scope, $state, $stateParams) ->
+Ctrl = ($scope, $state, $stateParams, Game) ->
   $scope._prev = null
   $scope._current= null
 
@@ -8,6 +8,8 @@ Ctrl = ($scope, $state, $stateParams) ->
     footsteps: document.getElementById('footsteps')
     wallHit: document.getElementById('wallHit')
     winner: document.getElementById('winner')
+  $scope.playerId = $stateParams.id
+  $scope.channel = $stateParams.channel
 
   audio.background.onended = ()->
     audio.background.pause()
@@ -37,6 +39,16 @@ Ctrl = ($scope, $state, $stateParams) ->
   $scope.untrack = ($event) ->
     $scope._current = {x: $event.pageX, y: $event.pageY}
     $scope.direction = getDirection($scope._prev, $scope._current)
+    $scope.move({player_id: $scope.playerId, direction: $scope.direction})
+
+  # $scope.move = ->
+  #   Game.move({move: {player_id: $scope.playerId, direction: $scope.direction}}).$promise.
+  #     then(data)->
+  #       console.log('jlsjls')
+  $scope.move = (param)->
+    Game.move({move: param}).$promise
+      .then() ->
+        console.log('jdfslf')
   $scope.onAudioEnd = (audio) ->
     audioElement = document.getElementById(audio)
     audioElement.pause()
@@ -46,20 +58,23 @@ Ctrl = ($scope, $state, $stateParams) ->
   pusher = new Pusher('30187ba71ee217eb669c', {
       encrypted: true
     });
-  channel = pusher.subscribe('test_channel')
+  channel = pusher.subscribe($scope.channel)
 
   channel.bind 'move_success',
     (data)->
-      console.log('dfjslsfd')
-      # alert(data.message)
       audio.footsteps.play()
   channel.bind 'move_failed',
-    ()->
+    (data)->
       audio.wallHit.play()
   channel.bind 'game_winner',
-    ()->
+    (data)->
       audio.winner.play()
+  channel.bind 'game_started',
+    (data)->
+
+  channel.bind 'game_finished',
+    (data)->
 
   return
-Ctrl.$inject = ['$scope', '$state', '$stateParams']
+Ctrl.$inject = ['$scope', '$state', '$stateParams', 'Game']
 client.controller('GameCtrl', Ctrl)
