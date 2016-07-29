@@ -3,7 +3,11 @@ Ctrl = ($scope, $state) ->
   $scope._current= null
 
   $scope.direction = null
-
+  audio =
+    background: document.getElementById('backgroundAudio')
+    footsteps: document.getElementById('footsteps')
+    wallHit: document.getElementById('wallHit')
+    winner: document.getElementById('winner')
   getDirection = (coords1, coords2) ->
     yDiff = coords1.y - coords2.y
     xDiff = coords1.x - coords2.x
@@ -26,8 +30,13 @@ Ctrl = ($scope, $state) ->
   $scope.untrack = ($event) ->
     $scope._current = {x: $event.pageX, y: $event.pageY}
     $scope.direction = getDirection($scope._prev, $scope._current)
+  $scope.onAudioEnd = (audio) ->
+    audioElement = document.getElementById(audio)
+    audioElement.pause()
+    audioElement.currentTime = 0
 
   return
 
+  audio.background.play()
 Ctrl.$inject = ['$scope', '$state']
 client.controller('GameCtrl', Ctrl)

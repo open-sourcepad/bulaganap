@@ -2,7 +2,6 @@ module = ($resource)->
 
   Game = $resource "/api/game/",
     {
-      
     }
 
   Game
